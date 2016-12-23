@@ -1,6 +1,11 @@
 <html>
 <header><title>This is title</title></header>
 <body>
-Hello world
+You entered lat: {{ lat }} and lon: {{ lon }}.
+<form action="/input" method="post">
+  lat: <input type="text" name="lat"><br>
+  lon: <input type="text" name="lon"><br>
+  <input type="submit" value="Submit">
+</form>
 </body>
 </html>

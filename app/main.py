@@ -17,8 +17,6 @@
 import os
 import urllib
 
-from google.appengine.api import users
-from google.appengine.ext import ndb
 
 import jinja2
 import webapp2
@@ -32,11 +30,28 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-        template_values = {};
+        lat = self.request.get('lat', 0)
+        lon = self.request.get('lon', 0)
+        template_values = {
+            'lat' : lat,
+            'lon' : lon
+        };
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
+    def post(self):
+        lat = self.request.POST.get('lat')
+        lon = self.request.POST.get('lon')
+        template_values = {
+            'lat' : lat,
+            'lon' : lon
+        };
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(template_values))
+        
+
 
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
+    ('/input', MainPage),
 ], debug=True)
