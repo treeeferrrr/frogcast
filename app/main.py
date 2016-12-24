@@ -31,7 +31,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 API_KEY = "22669008d62b0d56b886cc4f14f24f99"
 
 def get_temperature(lat, lng):
-    forecast = forecastio.load_forecast(API_KEY, lat, lng, units = "si")
+    forecast = forecastio.load_forecast(API_KEY, lat, lng, None, "si")
 
     return forecast.currently().temperature
 
