@@ -1,11 +1,43 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
 <html>
-<header><title>This is title</title></header>
-<body>
-You entered lat: {{ lat }} and lon: {{ lon }}.
-<form action="/input" method="post">
-  lat: <input type="text" name="lat"><br>
-  lon: <input type="text" name="lon"><br>
-  <input type="submit" value="Submit">
-</form>
-</body>
+	<header><title>This is title</title></header>
+	<body>
+		You entered lat: {{ lat }} and lon: {{ lon }}.
+		<form action="/input" method="post">
+ 		 lat: <input type="text" name="lat"><br>
+ 		 lon: <input type="text" name="lon"><br>
+ 		 <input type="submit" value="Submit">
+		</form>
+	</body>
+
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHMg6wkA2Opsavysx1q0yVInJp-sEntpg&callback=initMap">
+    </script>
+  </body>
 </html>
+
