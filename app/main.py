@@ -33,8 +33,10 @@ API_KEY = "22669008d62b0d56b886cc4f14f24f99"
 
 def get_temperature(lat, lng):
     forecast = forecastio.load_forecast(API_KEY, lat, lng, None, "si")
-
     return forecast.currently().temperature
+
+
+
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -48,6 +50,7 @@ class MainPage(webapp2.RequestHandler):
         };
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
+
 
 
 class Results(webapp2.RequestHandler):

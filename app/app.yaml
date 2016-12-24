@@ -4,10 +4,11 @@ threadsafe: true
 
 # [START handlers]
 handlers:
+- url: /stylesheets
+  static_dir: stylesheets
 
 - url: /.*
   script: main.app
-
 # [END handlers]
 
 # [START libraries]
