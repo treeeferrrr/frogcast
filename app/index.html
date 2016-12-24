@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html>
-	<header><title>This is title</title></header>
-	<body>
-		You entered lat: {{ lat }} and lng: {{ lng }}. The temperature is {{ temp }} degrees.
-		<form action="/input" id="form" method="post">
+    <head>
+        <base href="/">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    </head>
+    <body>
  		 lat: <input type="text" name="lat" id="lat"><br>
  		 lng: <input type="text" name="lng" id="lng"><br>
- 		 <input type="submit" value="Submit">
-		</form>
-	</body>
+        <div>
+            <span class="result"></span>
+        </div>
+        <script>
+            function Submit(lat, lng){
+                $.ajax({
+                  type: "POST",
+                  url: "/results",
+                  dataType: 'json',
+                  data: JSON.stringify({ "lat": lat, "lng": lng})
+                })
+                .done(function( data ) { // check why I use done
+                    $('.result').text(data['temp']);
+                });
+            };
+        </script>
+    </body>
 
   <head>
     <style>
@@ -40,7 +56,7 @@
         google.maps.event.addListener(map, 'click', function(e) {
         	document.getElementById("lat").value = e.latLng.lat();
         	document.getElementById("lng").value = e.latLng.lng();
-        	document.getElementById("form").submit();
+		Submit(e.latLng.lat(), e.latLng.lng());
         	if (marker === null) {
         		marker = new google.maps.Marker({
 	            position: e.latLng,

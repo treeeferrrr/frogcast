@@ -18,6 +18,7 @@ import os
 import sys
 sys.path.insert(0, 'lib')
 import forecastio
+import json
 import jinja2
 import webapp2
 
@@ -47,22 +48,18 @@ class MainPage(webapp2.RequestHandler):
         };
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
+
+
+class Results(webapp2.RequestHandler):
     def post(self):
-        lat = self.request.POST.get('lat')
-        lng = self.request.POST.get('lng')
-        temp = get_temperature(lat,lng)
-        template_values = {
-            'lat' : lat,
-            'lng' : lng,
-            'temp' : temp,
-        };
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render(template_values))
+        data = json.loads(self.request.body)
+        temp = get_temperature(data['lat'], data['lng'])
+        self.response.out.write(json.dumps(({'temp': temp})))
         
 
 
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/input', MainPage),
+    ('/results', Results),
 ], debug=True)
