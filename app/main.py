@@ -15,9 +15,9 @@
 
 # [START imports]
 import os
-import urllib
-
-
+import sys
+sys.path.insert(0, 'lib')
+import forecastio
 import jinja2
 import webapp2
 
@@ -28,13 +28,21 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 # [END imports]
 
 
+API_KEY = "22669008d62b0d56b886cc4f14f24f99"
+
+def get_temperature(lat, lon):
+    forecast = forecastio.load_forecast(API_KEY, lat, lon)
+
+    return forecast.currently().temperature
+
 class MainPage(webapp2.RequestHandler):
     def get(self):
         lat = self.request.get('lat', 0)
         lon = self.request.get('lon', 0)
         template_values = {
             'lat' : lat,
-            'lon' : lon
+            'lon' : lon,
+            'temp' : get_temperature(lat,lon),
         };
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
@@ -43,7 +51,8 @@ class MainPage(webapp2.RequestHandler):
         lon = self.request.POST.get('lon')
         template_values = {
             'lat' : lat,
-            'lon' : lon
+            'lon' : lon,
+            'temp' : get_temperature(lat,lon),
         };
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
