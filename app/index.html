@@ -2,10 +2,10 @@
 <html>
 	<header><title>This is title</title></header>
 	<body>
-		You entered lat: {{ lat }} and lon: {{ lon }}. The temperature is {{ temp }} degrees.
+		You entered lat: {{ lat }} and lng: {{ lng }}. The temperature is {{ temp }} degrees.
 		<form action="/input" method="post">
- 		 lat: <input type="text" name="lat"><br>
- 		 lon: <input type="text" name="lon"><br>
+ 		 lat: <input type="text" name="lat" id="lat"><br>
+ 		 lng: <input type="text" name="lng" id="lng"><br>
  		 <input type="submit" value="Submit">
 		</form>
 	</body>
@@ -14,25 +14,50 @@
     <style>
        #map {
         height: 400px;
-        width: 50%;
+        width: 60%;
 
        }
     </style>
   </head>
   <body>
-    <h3>My Google Maps Demo</h3>
+    <h3>Click anywhere on the map</h3>
     <div id="map"></div>
     <script>
       function initMap() {
-        var uluru = {lat: 0, lng: 0};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 2,
-          center: uluru
+        var myLatlng = {lat: 0, lng: 0};
+        var mapOptions = {
+				  zoom: 2,
+				  center: myLatlng
+				}
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var clickLocation = myLatlng;
+        var marker = null
+
+        function changeMarkerPosition(marker, latlng) {
+				    marker.setPosition(latlng);
+				}
+
+        google.maps.event.addListener(map, 'click', function(e) {
+        	document.getElementById("lat").value = e.latLng.lat();
+        	document.getElementById("lng").value = e.latLng.lng();
+        	if (marker === null) {
+        		marker = new google.maps.Marker({
+	            position: e.latLng,
+	            map: map,
+	            icon: {
+	              path: google.maps.SymbolPath.CIRCLE,
+	              fillColor: 'black',
+	              fillOpacity: 1.0,
+	              strokeColor: 'yellow',
+	              strokeWeight: .2,
+	              scale: 6
+	            }
+	          });
+        	}
+        	else {
+        		changeMarkerPosition(marker, e.latLng);
+        	}
         });
-        // var marker = new google.maps.Marker({
-        //   position: uluru,
-        //   map: map
-        // });
       }
     </script>
     <script async defer
