@@ -3,7 +3,7 @@
 	<header><title>This is title</title></header>
 	<body>
 		You entered lat: {{ lat }} and lng: {{ lng }}. The temperature is {{ temp }} degrees.
-		<form action="/input" method="post">
+		<form action="/input" id="form" method="post">
  		 lat: <input type="text" name="lat" id="lat"><br>
  		 lng: <input type="text" name="lng" id="lng"><br>
  		 <input type="submit" value="Submit">
@@ -40,6 +40,7 @@
         google.maps.event.addListener(map, 'click', function(e) {
         	document.getElementById("lat").value = e.latLng.lat();
         	document.getElementById("lng").value = e.latLng.lng();
+        	document.getElementById("form").submit();
         	if (marker === null) {
         		marker = new google.maps.Marker({
 	            position: e.latLng,
