@@ -1,3 +1,44 @@
+.container {
+    height: 500px;
+    width: 100%;
+}
+
+.map {
+    position: relative;
+    float: left;
+}
+
+.weather {
+    position: relative;
+    float: left;
+    height: 500px;
+    width: 40%;
+    font-family: "Helvetica Neue", "Lucida Grande", sans-serif;
+    font-weight: 300;
+    font-size: 40px;
+}
+
+.weather p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.info {
+    position: absolute;
+    left: 8%;
+}
+
+.location {
+    font-size: 20px;
+}
+
+.temperature {
+    font-weight: 500;
+    font-size: 70px;
+    letter-spacing: 0px;
+}
+
+
 .modal {
     display:    none;
     position:   fixed;

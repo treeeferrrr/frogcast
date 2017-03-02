@@ -1,92 +1,117 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      <base href="/">
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-      <!-- [START css] -->
-      <link type="text/css" rel="stylesheet" href="/stylesheets/mystyle.css"/>
-      <!-- [END css] -->
-    </head>
-    <body>
- 		 lat: <input type="text" name="lat" id="lat"><br>
- 		 lng: <input type="text" name="lng" id="lng"><br>
-        <div>
-            <span class="result"></span>
-        </div>
-        <script>
-            $body = $("body");
-
-            $(document).on({
-                ajaxStart: function() { $body.addClass("loading");    },
-                 ajaxStop: function() { $body.removeClass("loading"); }    
-            });
-
-            function Submit(lat, lng){
-                $.ajax({
-                  type: "POST",
-                  url: "/results",
-                  dataType: 'json',
-                  data: JSON.stringify({ "lat": lat, "lng": lng})
-                })
-                .done(function( data ) { // check why I use done
-                    $('.result').text(data['temp']);
-                });
-            };
-        </script>
-    </body>
-
   <head>
+    <base href="/">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- [START css] -->
+    <link type="text/css" rel="stylesheet" href="/stylesheets/mystyle.css"/>
+    <!-- [END css] -->
     <style>
-       #map {
-        height: 400px;
-        width: 60%;
-       }
+     #map {
+       height: 500px;
+       width: 60%;
+     }
     </style>
   </head>
   <body>
     <h3>Click anywhere on the map</h3>
-    <div id="map"></div>
+    <div class="container">
+      <div class ="map" id="map"></div>
+      <div class="weather">
+        <div class="info">
+          <div class="location">
+            <p>City, (State), Country</p>
+          </div>
+          <div class="temperature">
+            <p><span class="temp"></span>&#8451</p>
+            <span class="icon"></span>
+          </div>
+          <div class="other-info">
+            <p>Wind: <span class="wind"></span> mph</p>
+            <p>Chance of Rain: <span class="rain_chance"></span>%</p>
+            <p>Humidity: <span class="humidity"></span>%</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
+
+      function changeIcon(icon) {
+        if (icon === "clear-day") {}
+          // display clear day
+        else if (icon === "clear-night") {}
+        else if (icon === "rain") {}
+        else if (icon === "snow") {}
+        else if (icon === "sleet") {}
+        else if (icon === "wind") {}
+        else if (icon === "fog") {}
+        else if (icon === "cloudy") {}
+        else if (icon === "partly-cloudy-day") {}
+        else if (icon === "partly-cloudy-night") {}
+        else if (icon === "hail") {}
+        else if (icon === "thunderstorm") {}
+        else if (icon === "tornado") {}
+        else {}
+      }
+
+      $body = $("body");
+
+      $(document).on({
+          ajaxStart: function() { $body.addClass("loading");    },
+          ajaxStop: function() { $body.removeClass("loading"); }    
+      });
+
+      var icon;
+
+      function Submit(lat, lng){
+        $.ajax({
+          type: "POST",
+          url: "/results",
+          dataType: 'json',
+          data: JSON.stringify({ "lat": lat, "lng": lng})
+        })
+        .done(function( data ) { // check why I use done
+            $('.temp').text(Math.round(data['temp']));
+            $('.wind').text(Math.round(data['wind']));
+            $('.rain_chance').text(Math.round(data['rain_chance'] * 100));
+            $('.humidity').text(Math.round(data['humidity'] * 100));
+            changeIcon(data['icon']);
+        });
+      };
+
+      function randomLat() {
+        return Math.random() * 180 - 90;
+      }
+
+      function randomLong() {
+        return Math.random() * 360 - 180;
+      }
+
       function initMap() {
-        var myLatlng = {lat: 0, lng: 0};
+        var myLatlng = {lat: randomLat(), lng: randomLong()};
         var mapOptions = {
 				  zoom: 2,
-				  center: myLatlng,
+				  center: {lat: 0, lng: 0},
           draggableCursor: 'default',
           draggingCursor: 'default'
 				}
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-        var clickLocation = myLatlng;
-        var marker = null
-
+        var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          animation: google.maps.Animation.DROP,
+        })
+        Submit(myLatlng.lat, myLatlng.lng);
 
         function changeMarkerPosition(marker, latlng) {
 				    marker.setPosition(latlng);
 				}
 
         google.maps.event.addListener(map, 'click', function(e) {
-        	document.getElementById("lat").value = e.latLng.lat();
-        	document.getElementById("lng").value = e.latLng.lng();
+          //console.log("{lat: " + e.latLng.lat() + ", lng: " + e.latLng.lng() + "},");
 		      Submit(e.latLng.lat(), e.latLng.lng());
-        	if (marker === null) {
-        		marker = new google.maps.Marker({
-	            position: e.latLng,
-	            map: map,
-              animation: google.maps.Animation.DROP,
-	            // icon: {
-	            //   path: google.maps.SymbolPath.CIRCLE,
-	            //   fillColor: 'black',
-	            //   fillOpacity: 1.0,
-	            //   strokeColor: 'yellow',
-	            //   strokeWeight: .2,
-	            //   scale: 6,
-	            // }
-	          });
-        	}
-        	else {
-        		changeMarkerPosition(marker, e.latLng);
-        	}
+      		changeMarkerPosition(marker, e.latLng);
         });
       }
     </script>

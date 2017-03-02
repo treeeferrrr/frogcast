@@ -31,22 +31,24 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 API_KEY = "22669008d62b0d56b886cc4f14f24f99"
 
-def get_temperature(lat, lng):
+##def get_temperature(lat, lng):
+##    forecast = forecastio.load_forecast(API_KEY, lat, lng, None, "si")
+##    return forecast.currently().temperature
+
+def get_current_weather(lat, lng):
     forecast = forecastio.load_forecast(API_KEY, lat, lng, None, "si")
-    return forecast.currently().temperature
-
-
+    return forecast.currently()
 
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
         lat = self.request.get('lat', 0)
         lng = self.request.get('lng', 0)
-        temp = get_temperature(lat,lng)
+##        temp = get_temperature(lat,lng)
         template_values = {
             'lat' : lat,
             'lng' : lng,
-            'temp' : temp,
+##            'temp' : temp,
         };
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
@@ -56,8 +58,18 @@ class MainPage(webapp2.RequestHandler):
 class Results(webapp2.RequestHandler):
     def post(self):
         data = json.loads(self.request.body)
-        temp = get_temperature(data['lat'], data['lng'])
-        self.response.out.write(json.dumps(({'temp': temp})))
+        #temp = get_temperature(data['lat'], data['lng'])
+        weather_info = get_current_weather(data['lat'], data['lng'])
+        temp = weather_info.temperature
+        icon = weather_info.icon
+        wind = weather_info.windSpeed
+        rain_chance = weather_info.precipProbability
+        humidity = weather_info.humidity
+        self.response.out.write(json.dumps(({'temp': temp,
+                                             'icon': icon,
+                                             'wind': wind,
+                                             'rain_chance': rain_chance,
+                                             'humidity': humidity})))
         
 
 
