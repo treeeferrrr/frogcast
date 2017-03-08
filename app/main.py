@@ -37,7 +37,9 @@ API_KEY = "22669008d62b0d56b886cc4f14f24f99"
 
 def get_current_weather(lat, lng):
     forecast = forecastio.load_forecast(API_KEY, lat, lng, None, "si")
-    return forecast.currently()
+    result = forecast.currently()
+    result.d['timezone'] = forecast.json['timezone']
+    return result
 
 
 class MainPage(webapp2.RequestHandler):
@@ -65,7 +67,7 @@ class Results(webapp2.RequestHandler):
         wind = weather_info.windSpeed
         rain_chance = weather_info.precipProbability
         humidity = weather_info.humidity
-        timezome = weather_info.timezone
+        timezone = weather_info.timezone
         self.response.out.write(json.dumps(({'temp': temp,
                                              'icon': icon,
                                              'wind': wind,

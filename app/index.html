@@ -81,6 +81,9 @@
         });
       };
 
+      var minZoomLevel = 1;
+      
+	
       function randomLat() {
         return Math.random() * 180 - 90;
       }
@@ -92,12 +95,18 @@
       function initMap() {
         var myLatlng = {lat: randomLat(), lng: randomLong()};
         var mapOptions = {
-				  zoom: 2,
+				  zoom: minZoomLevel,
 				  center: {lat: 0, lng: 0},
           draggableCursor: 'default',
           draggingCursor: 'default'
 				}
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+      	google.maps.event.addListener(map, 'zoom_changed', function () {
+	  if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
+      	});
+	
+
         var marker = new google.maps.Marker({
           position: myLatlng,
           map: map,
