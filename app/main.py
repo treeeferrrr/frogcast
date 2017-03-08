@@ -65,11 +65,13 @@ class Results(webapp2.RequestHandler):
         wind = weather_info.windSpeed
         rain_chance = weather_info.precipProbability
         humidity = weather_info.humidity
+        timezome = weather_info.timezone
         self.response.out.write(json.dumps(({'temp': temp,
                                              'icon': icon,
                                              'wind': wind,
                                              'rain_chance': rain_chance,
-                                             'humidity': humidity})))
+                                             'humidity': humidity,
+                                             'timezone': timezone})))
         
 
 

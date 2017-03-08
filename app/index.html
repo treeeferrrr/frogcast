@@ -21,7 +21,7 @@
       <div class="weather">
         <div class="info">
           <div class="location">
-            <p>City, (State), Country</p>
+	    <p><span class="zone"></span></p>
           </div>
           <div class="temperature">
             <p><span class="temp"></span>&#8451</p>
@@ -76,6 +76,7 @@
             $('.wind').text(Math.round(data['wind']));
             $('.rain_chance').text(Math.round(data['rain_chance'] * 100));
             $('.humidity').text(Math.round(data['humidity'] * 100));
+            $('.zone').text(data['timezone']);
             changeIcon(data['icon']);
         });
       };
