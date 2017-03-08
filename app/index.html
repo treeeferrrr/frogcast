@@ -94,8 +94,8 @@
       function initMap() {
         var myLatlng = {lat: randomLat(), lng: randomLong()};
         var mapOptions = {
-				  zoom: minZoomLevel,
-				  center: {lat: 0, lng: 0},
+				  zoom: 2,
+				  center: {lat: 31, lng: -36},
           draggableCursor: 'default',
           draggingCursor: 'default'
 				}
@@ -122,8 +122,6 @@
       	  minX = strictBounds.getSouthWest().lng(),
           minY = strictBounds.getSouthWest().lat();
 
-   	  if (x < minX) x = minX;
-    	  if (x > maxX) x = maxX;
    	  if (y < minY) y = minY;
      	  if (y > maxY) y = maxY;
 
