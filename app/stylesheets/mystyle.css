@@ -1,3 +1,11 @@
+h3 {
+  font-family: "Helvetica Neue", "Lucida Grande", sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+  text-align: left;
+  margin-left: 16px
+}
+
 .container {
     height: 500px;
     width: 100%;
@@ -50,16 +58,16 @@
     left:       0;
     height:     100%;
     width:      100%;
-    background: rgba( 255, 255, 255, .8 ) 
-                url('https://www2.naz.edu/packages/www_naz_edu/themes/naz_main/images/loading.gif') 
-                50% 50% 
+    background: rgba( 255, 255, 255, .8 )
+                url('https://www2.naz.edu/packages/www_naz_edu/themes/naz_main/images/loading.gif')
+                50% 50%
                 no-repeat;
 }
 
 /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
 body.loading {
-    overflow: hidden;   
+    overflow: hidden;
 }
 
 /* Anytime the body has the loading class, our
